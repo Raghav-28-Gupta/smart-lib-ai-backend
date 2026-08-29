@@ -1,0 +1,19 @@
+{
+  "worktree": {
+    "sparsePaths": [
+      ".claude",
+      "ai-backend",
+      "backend"
+    ]
+  },
+  "permissions": {
+    "additionalDirectories": [
+      "../backend"
+    ],
+    "deny": [
+      "Read(./**/.venv/**)",
+      "Read(./**/__pycache__/**)",
+      "Read(./**/*.pyc)"
+    ]
+  }
+}
