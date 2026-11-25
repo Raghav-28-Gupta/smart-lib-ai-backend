@@ -1,0 +1,137 @@
+{
+  "artifact": "noshow-20261124-e60bbd87.joblib",
+  "model_version": "noshow-20261124-e60bbd87",
+  "seed": 42,
+  "students": {
+    "total": 2000,
+    "train": 1200,
+    "calibration": 400,
+    "test": 400
+  },
+  "rows": {
+    "total": 30535,
+    "train": 18081,
+    "calibration": 6211,
+    "test": 6243
+  },
+  "no_show_rate": {
+    "train": 0.14977,
+    "calibration": 0.164064,
+    "test": 0.149768
+  },
+  "base_rate": {
+    "train_mean": 0.14977
+  },
+  "xgboost": {
+    "n_estimators": 150,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "eval_metric": "logloss",
+    "random_state": 42,
+    "tree_method": "hist",
+    "n_jobs": 1
+  },
+  "calibration": {
+    "method": "sigmoid",
+    "cross_validated_brier": {
+      "sigmoid": 0.117544,
+      "isotonic": 0.118016
+    },
+    "out_of_fold_extreme_outputs": {
+      "sigmoid": 0,
+      "isotonic": 17
+    },
+    "folds": 5
+  },
+  "test": {
+    "min_probability": 0.013917,
+    "max_probability": 0.801625,
+    "roc_auc": 0.726747,
+    "brier": 0.113664,
+    "log_loss": 0.376461,
+    "base_rate_brier": 0.127337,
+    "mean_abs_calibration_gap": 0.01115
+  },
+  "uncalibrated_test": {
+    "min_probability": 0.011455,
+    "max_probability": 0.814957,
+    "roc_auc": 0.726747,
+    "brier": 0.113659,
+    "log_loss": 0.37659,
+    "base_rate_brier": 0.127337,
+    "mean_abs_calibration_gap": 0.010848
+  },
+  "calibration_bin_scheme": "equal_count",
+  "calibration_bins": [
+    {
+      "mean_predicted": 0.035336,
+      "observed_rate": 0.04,
+      "count": 625
+    },
+    {
+      "mean_predicted": 0.052256,
+      "observed_rate": 0.0608,
+      "count": 625
+    },
+    {
+      "mean_predicted": 0.069283,
+      "observed_rate": 0.0624,
+      "count": 625
+    },
+    {
+      "mean_predicted": 0.088738,
+      "observed_rate": 0.078526,
+      "count": 624
+    },
+    {
+      "mean_predicted": 0.110246,
+      "observed_rate": 0.105769,
+      "count": 624
+    },
+    {
+      "mean_predicted": 0.133958,
+      "observed_rate": 0.112179,
+      "count": 624
+    },
+    {
+      "mean_predicted": 0.161351,
+      "observed_rate": 0.174679,
+      "count": 624
+    },
+    {
+      "mean_predicted": 0.200903,
+      "observed_rate": 0.200321,
+      "count": 624
+    },
+    {
+      "mean_predicted": 0.262085,
+      "observed_rate": 0.24359,
+      "count": 624
+    },
+    {
+      "mean_predicted": 0.442407,
+      "observed_rate": 0.419872,
+      "count": 624
+    }
+  ],
+  "feature_importances": {
+    "hour_of_day": 0.079545,
+    "day_of_week": 0.031411,
+    "duration_minutes": 0.030851,
+    "lead_time_hours": 0.13698,
+    "resource_type": 0.072638,
+    "past_attendance_ratio": 0.384612,
+    "consecutive_attended_count": 0.05176,
+    "recent_noshows_count": 0.037608,
+    "reliability_score": 0.147511,
+    "bookings_last_30d": 0.027085
+  },
+  "libraries": {
+    "python": "3.13.1",
+    "xgboost": "3.4.1",
+    "scikit_learn": "1.9.0",
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "joblib": "1.5.3"
+  }
+}

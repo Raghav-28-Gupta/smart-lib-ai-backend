@@ -1,1 +1,1 @@
-# XGBoost no-show classifier lands here in Phase 3.
+# The no-show model: features, simulator, training (train.py) and serving (model.py).

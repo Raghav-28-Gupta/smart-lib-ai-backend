@@ -1,0 +1,3 @@
+tests/fixtures/noshow_features.json text eol=lf
+app/ml/artifacts/*.joblib binary
+app/ml/artifacts/metrics.json text eol=lf
