@@ -305,7 +305,7 @@ answer shared with the backend's contract test (a byte-identical copy lives at
 ## Deploy
 
 Deployed on Render as a **second web service** next to the Node backend (checked on 2026-11-26 on the
-free plan: `/health` answered 200 after a cold start of about 48 seconds, and `POST /recommend/batch`
+free plan: `/health` answered 200 after a cold start of 48 to 68 seconds, and `POST /recommend/batch`
 without the token answered 401). Without it, or with the backend's `AI_BACKEND_URL` unset, no booking is
 scored, every priority stays 1.0 and students see the popularity list. To deploy it, run this as a **second
 web service** next to the Node backend and set the backend's `AI_BACKEND_URL` to
@@ -326,14 +326,16 @@ What a hosted service needs (worked out from the files; the cold start and the t
   `metrics.json`), so set `PYTHON_VERSION=3.13.1` rather than rely on the host's
   default. Whether numpy 2.5.2 and pandas 3.0.5 install on 3.11 has not been checked.
 - **`implicit==0.7.3`** is the collaborative part of the recommender; it is the pin most
-  likely to need a compiler on Linux. If the first build fails there, drop it from
+  likely to need a compiler on Linux. It installed and ran on Render (checked on 2026-11-26: the first
+  refresh answered `tfidf-als-1`, so ALS ran). If the first build fails there, drop it from
   `requirements.txt`: the service then answers content-only picks (`tfidf-1`), a path the
   tests cover, and the backend keeps working.
 - **Cold start.** A sleeping free instance takes tens of seconds to import and
   load the model, so the first booking after idle hits the backend's 2-second
   timeout and stays unscored. That is the designed fail-open path, not a fault.
   The recommender call has a 90-second timeout and is retried by the backend every 15 minutes.
-  Measured once, on 2026-11-26: a sleeping free instance answered `/health` after 47.7 seconds, inside that timeout.
+  Measured twice, on 2026-11-26: a sleeping free instance answered `/health` after 47.7 and after 67.8 seconds,
+  both inside that timeout, the second with only about 22 seconds to spare.
 - **The shared secret is implemented.** Set `AI_TOKEN` to the same long random value on this
   service and on the backend: the backend sends it in the `x-ai-token` header on the
   recommender call only, and this service compares it in constant time. Unset or blank, the
