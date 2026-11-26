@@ -304,8 +304,10 @@ answer shared with the backend's contract test (a byte-identical copy lives at
 
 ## Deploy
 
-Not deployed yet: the backend's production `AI_BACKEND_URL` is unset, so no
-booking is scored, every priority stays 1.0 and students see the popularity list. To deploy, run this as a **second
+Deployed on Render as a **second web service** next to the Node backend (checked on 2026-11-26 on the
+free plan: `/health` answered 200 after a cold start of about 48 seconds, and `POST /recommend/batch`
+without the token answered 401). Without it, or with the backend's `AI_BACKEND_URL` unset, no booking is
+scored, every priority stays 1.0 and students see the popularity list. To deploy it, run this as a **second
 web service** next to the Node backend and set the backend's `AI_BACKEND_URL` to
 its address. Set the **same long random `AI_TOKEN` on both services** (see *Recommender*): it is what protects the
 recommender, which receives student ids. Install exactly `requirements.txt`, which pins numpy 2.5.2, scikit-learn 1.9.0,
@@ -315,7 +317,7 @@ backend treats that as "no nudge"). Loading also prints a joblib/NumPy
 deprecation warning every time with these versions (harmless now; unpickling
 breaks once NumPy removes that API, so retrain then).
 
-What a hosted service needs (checked against the files, not yet tried on Render):
+What a hosted service needs (worked out from the files; the cold start and the two checks above are the only things measured on Render):
 
 - **Build command** `pip install -r requirements.txt`; **start command**
   `uvicorn app.main:app --host 0.0.0.0 --port $PORT` (the `--reload --port 8000`
@@ -331,6 +333,7 @@ What a hosted service needs (checked against the files, not yet tried on Render)
   load the model, so the first booking after idle hits the backend's 2-second
   timeout and stays unscored. That is the designed fail-open path, not a fault.
   The recommender call has a 90-second timeout and is retried by the backend every 15 minutes.
+  Measured once, on 2026-11-26: a sleeping free instance answered `/health` after 47.7 seconds, inside that timeout.
 - **The shared secret is implemented.** Set `AI_TOKEN` to the same long random value on this
   service and on the backend: the backend sends it in the `x-ai-token` header on the
   recommender call only, and this service compares it in constant time. Unset or blank, the
