@@ -21,7 +21,9 @@ app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
 @app.exception_handler(RequestValidationError)
 async def validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-    """422 with the type, location and message of each problem, and nothing of the input.
+    """422 with the type, location and message of each problem, and no value of the input.
+
+    The location can still carry the NAME of an unknown key, since that is where the problem is.
 
     FastAPI's default body echoes each rejected value back. A NaN or infinity there cannot be
     written as JSON, so rejecting one would turn a 422 into a 500.
